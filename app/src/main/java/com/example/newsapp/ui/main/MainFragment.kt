@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.newsapp.R
+import androidx.core.view.isVisible
+import com.example.newsapp.databinding.MainFragmentBinding
+import com.example.newsapp.ui.adapter.NewsAdapter
 
 class MainFragment : Fragment() {
 
@@ -15,18 +17,28 @@ class MainFragment : Fragment() {
     }
 
     private lateinit var viewModel: MainViewModel
+    private lateinit var adapter: NewsAdapter
+    private lateinit var binding: MainFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
+        binding = MainFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        adapter = NewsAdapter()
+        binding.rvNews.adapter = adapter
+        binding.loadingLayout.pbProgressbar.isVisible = false
+        binding.loadingLayout.tvError.isVisible = false
     }
 
 }
